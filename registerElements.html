@@ -1,0 +1,220 @@
+<html>
+<head>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+        <script src="https://code.jquery.com/jquery-3.5.0.min.js" integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ=" crossorigin="anonymous"></script>
+
+</head>
+<body>
+<style>
+  div.label {
+    width: 200px;
+  }
+
+  input {
+    width: 450px;
+  }
+  button{
+    margin: auto;
+  }
+</style>
+<script>
+  var playerName = '';
+  var elements = [];
+
+  function showLoader(){
+    $('#loader').addClass("active");
+    $('#loader').removeClass("disabled");
+  }
+
+  function isValidField(inputName,containerName){
+    let isValid;
+    if(!$('#'+inputName).val()){
+      isValid = false;
+      $('#'+containerName).addClass("error");
+    }else{
+      $('#'+containerName).removeClass("error");
+      isValid = true;
+    }
+    return isValid;
+  }
+
+  function fieldsArePopulated(){
+    let isFilled = true;
+
+    if(!isValidField('name','nameContainer')){
+      isFilled = false;
+    }
+    if(!isValidField('element1','element1Container')){
+      isFilled = false;
+    }
+    if(!isValidField('element2','element2Container')){
+      isFilled = false;
+    }
+    if(!isValidField('element3','element3Container')){
+      isFilled = false;
+    }
+    if(!isValidField('element4','element4Container')){
+      isFilled = false;
+    }
+    if(!isValidField('element5','element5Container')){
+      isFilled = false;
+    }
+    if(!isValidField('element6','element6Container')){
+      isFilled = false;
+    }
+    if(!isValidField('element7','element7Container')){
+      isFilled = false;
+    }
+    if(!isValidField('element8','element8Container')){
+      isFilled = false;
+    }
+
+    return isFilled;
+  }
+
+  function getElements(){
+    elements = [];
+    $( "#itemFields :input" ).each(function( index ) {
+      var val=$( this ).val();
+      elements.push(val);
+    });
+  }
+
+  function submitData(){
+
+    if(!fieldsArePopulated()){
+      alert("Please fill out all fields");
+      return;
+    }
+
+    showLoader();
+
+    playerName = $("#name").val();
+    elements = [];
+    elements.push($("#element1").val());
+    elements.push($("#element2").val());
+    elements.push($("#element3").val());
+    elements.push($("#element4").val());
+    elements.push($("#element5").val());
+    elements.push($("#element6").val());
+    elements.push($("#element7").val());
+    elements.push($("#element8").val());
+
+    console.log("playerName="+playerName);
+    console.log("items:" + elements);
+    var obj = {
+      playerName: playerName,
+      elements: elements
+    }
+    var data = JSON.stringify(obj)
+    $.ajax({
+      type: 'POST',
+      url: 'https://hlthuhwzvj.execute-api.us-east-1.amazonaws.com/prod/api/v1/elements',
+      data: data,
+      contentType:'application/json',
+      success: function(data){
+        console.log("Successfully uploaded");
+        window.location.href = '/displayResults.html'; 
+
+      },
+      error: function(err){
+        console.log("upload failed");
+        console.log(err)
+        window.location.href = './displayResults.html'; 
+      }
+    })
+  }  
+</script>
+
+<div>Title Bar</div>
+<!-- Following Menu -->
+<div class="ui large top inverted fixed hidden menu">
+  <div class="ui container">
+      <h1 class="ui inverted header">Dr Magnet Hands</h1>
+  </div>
+</div>
+
+<div class="ui text container">
+  <h1 class="ui inverted header">
+    Imagine-a-Company
+  </h1>
+  <h2>Character Creation</h2>
+  <ol>
+      <li>Enter your real name in the first field.</li>
+      <li>Come up with a stupid character name. ("Captain Happenstance","The Butt Wizard", "The Furniture Suffaragette", "Catastrophe Adams") Place it in the first field.</li>
+      <li>Come up with a stupid super power or ability. ("Door-Fu", "Unreliable flight", "Eight-armed monster", "Art theft". Place it in the second field.</li>
+      <li>Come up with a stupid prop or plot device. ("13 childrens worth of teeth", "More cocaine than you can hold in both hands", "Apples, Apples Everywhere!", "A dog on a string". Place it in the third field.</li>
+      <li>Come up with five more stupid things in the above listed categories and place them in the remaining fields.</li>
+      <li>Click Submit</li>
+  </ol>
+</div>
+<div class="ui text container">
+
+  <div id="nameContainer" class="ui labeled input">
+    <div class="ui label">Your Name:</div>
+    <input type="text" id="name">
+  </div>
+  
+  <div id="element1Container" class="ui labeled input">
+    <div class="ui label">Stupid Character Name:</div>
+    <input type="text" id="element1">
+  </div>
+
+  <div id="element2Container" class="ui labeled input">
+    <div class="ui label">Stupid Super Power:</div>
+    <input type="text" id="element2">
+  </div>
+
+  <div id="element3Container" class="ui labeled input">
+    <div class="ui label">Stupid Prop:</div>
+    <input type="text" id="element3">
+  </div>
+
+  <div id="element4Container" class="ui labeled input">
+      <div class="ui label">Something Stupid:</div>
+      <input type="text" id="element4">
+  </div>
+
+  <div id="element5Container" class="ui labeled input">
+      <div class="ui label">Something Stupid:</div>
+      <input type="text" id="element5">
+  </div>
+
+  <div id="element6Container" class="ui labeled input">
+      <div class="ui label">Something Stupid:</div>
+      <input type="text" id="element6">
+  </div>
+
+  <div id="element7Container" class="ui labeled input">
+      <div class="ui label">Something Stupid:</div>
+      <input type="text" id="element7">
+  </div>
+
+  <div id="element8Container" class="ui labeled input">
+      <div class="ui label">Something Stupid:</div>
+      <input type="text" id="element8">
+  </div>
+
+
+    <div id="loader" class="ui disabled inverted dimmer">
+      <div class="ui text loader">Loading</div>
+    </div>
+
+  
+  <div class="ui container">
+    <button class="ui button" onclick="submitData()"">Submit</button>
+  </div>
+
+</div>
+
+
+
+<div class="ui inverted vertical footer segment">
+  <div class="ui container">
+        <p>This site is to help setup a game of Dr. Magnet hands, a game created by Grant Howitt</p>
+        <p>Get the rules <a href="http://lookrobot.co.uk/games/">here</a></p>
+  </div>
+</div>
+</body>
+
+</html>

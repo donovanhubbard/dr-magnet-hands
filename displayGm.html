@@ -1,0 +1,80 @@
+<html>
+<head>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+        <script src="https://code.jquery.com/jquery-3.5.0.min.js" integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ=" crossorigin="anonymous"></script>
+
+</head>
+<body>
+<script>
+  function renderElements(data){
+    let content = '<ul>';
+    for(let i=0;i<data.length;i++){
+        content+='<li>';
+        content+=data[i].element;
+        content+='</li>';
+    } 
+    content += '</ul>';
+    $('#content').html(content);
+  }
+
+  function loadElements(){
+    $.ajax({
+      type: 'GET',
+      url: 'https://hlthuhwzvj.execute-api.us-east-1.amazonaws.com/prod/api/v1/gm-elements',
+      success: function(data){
+        console.log("Successfully downloaded");
+        if(data.length === 0){
+          $('#content').text("Please wait for everyone to finish inputing their character details");
+        }else{
+          renderElements(data);
+          console.log(data);
+        }
+      },
+      error: function(err){
+        console.log("download failed");
+        console.log(err);
+        $('#content').text("Unable to load gm items. Go whine to the website administrator.");
+      }
+    })
+    
+  }
+
+
+ 
+</script>
+
+<div>Title Bar</div>
+<!-- Following Menu -->
+<div class="ui large top inverted fixed hidden menu">
+  <div class="ui container">
+      <h1 class="ui inverted header">Dr Magnet Hands</h1>
+  </div>
+</div>
+
+<div class="ui text container">
+        <h1 class="ui inverted header">
+                Imagine-a-Company
+        </h1>
+
+  <h2>GM Results</h2>
+
+</div>
+<div class="ui text container">
+    <div id="content">Loading...</div>
+</div>
+
+
+
+<div class="ui inverted vertical footer segment">
+  <div class="ui container">
+        <p>This site is to help setup a game of Dr. Magnet hands, a game created by Grant Howitt </p>
+        <p>Get the rules <a href="http://lookrobot.co.uk/games/">here</a></p>
+  </div>
+</div>
+</body>
+<script>
+  loadElements();
+  setInterval(loadElements,10000);
+</script>
+
+</html>
